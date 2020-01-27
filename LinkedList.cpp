@@ -134,37 +134,37 @@ class LinkedList {
 
 	void shuffle(int n) {
 	    LinkedList* shuffleList = new LinkedList();
-	    Node** nodeArray = new Node*[n];
-            for(int i = 0; i < n; ++i) {
-		Node* node = firstNode;
-		for(int j = 0; j < i; ++j) {
-		    if(node->next != NULL) {
-		        node = node->next;
-		    } else {
-		        node = NULL;
-			return;
-		    }
-		}
-	        nodeArray[i] = node;
-	    }
+	    for(int i = 1; i <= n; ++i) {
+               Node* tmpNode = firstNode;
 
-	    for(int i = 1; i < n; ++i) {
-	       Node* tmpNode = nodeArray[i-1];
+               for(int k = 1; k < i; ++k) {
+                   tmpNode = tmpNode->next;
+               }
+
+               if(tmpNode == NULL) {
+                   return;
+               }
+
 	       shuffleList->add(tmpNode->data);
+               tmpNode = firstNode;
 	       int value = 1;
 	       while(tmpNode != NULL) {
-	           for(int j = 0; j < (i*n + value); ++j) {
+                   tmpNode = firstNode;
+	           for(int j = 0; j < (value * n + (i - 1)); ++j) {
 		       if(tmpNode->next != NULL) {
 		           tmpNode = tmpNode->next;
-		       } else {
-		           tmpNode = NULL;
-			   break;
 		       }
 		   }
 
-		   if(tmpNode != NULL) {
-		       shuffleList->add(tmpNode->data);
-		   }
+		   shuffleList->add(tmpNode->data);
+
+                   for(int m = 0; m < n; ++m) {
+                       if(tmpNode != NULL) {
+                           tmpNode = tmpNode->next;
+                       } else {
+                           break;
+                       }
+                   }
 
 		   ++value;
 	       }

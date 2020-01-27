@@ -9,6 +9,6 @@ int main() {
    list->add(14);
    list->add(5);
    list->add(6);
-   list->shuffle(1);
+   list->shuffle(2);
    list->printList();
 }
