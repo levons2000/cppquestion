@@ -1,5 +1,6 @@
 #include <iostream>
 #include "LinkedList.cpp"
+#include <cstdlib>
 
 int main() {
    LinkedList* list = new LinkedList();
@@ -11,4 +12,5 @@ int main() {
    list->add(6);
    list->shuffle(2);
    list->printList();
+   system("pause");
 }

@@ -8,54 +8,59 @@ struct Node {
 class LinkedList {
     private:
         Node* firstNode;
-	Node* currentNode;
-	bool isFirstNodeInitialized = false;
+		Node* currentNode;
+		Node* lastNode;
+		bool isFirstNodeInitialized = false;
 
     public:
 	LinkedList() {
-	    this->firstNode = new Node();
-	    this->currentNode = this->firstNode;
+	    this->firstNode = NULL;
+	    this->currentNode = NULL;
+		this->lastNode = NULL;
 	}
 
 	void add(int data) {
-	    Node* lastNode = firstNode;
-	    if(lastNode->next == NULL && !isFirstNodeInitialized) {
-	        lastNode->data = data;
-		isFirstNodeInitialized = true;
-		return;
-	    }
-	    while(lastNode->next != NULL) {
-	        lastNode = lastNode->next;
-	    }
-	    lastNode->next = new Node();
-	    lastNode->next->data = data;
+		if (this->firstNode == NULL) {
+			firstNode = new Node();
+			firstNode->data = data;
+			lastNode = firstNode;
+			return;
+		}
+		
+		this->lastNode->next = new Node();
+		this->lastNode = this->lastNode->next;
+		this->lastNode->data = data;
 	}
 
 	void add(int data, int index) {
-	    Node* newNode = new Node();
-	    newNode->data = data;
-	    Node* nodeToChange = firstNode;
-	    if(index < 0) {
+		if(index < 0) {
 	        return;
 	    }
 
-	    if(index == 0 && isFirstNodeInitialized) {
+		if (firstNode == NULL) {
+			firstNode = new Node();
+			firstNode->data = data;
+			lastNode = firstNode;
+			return;
+		}
+		
+	    Node* newNode = new Node();
+	    newNode->data = data;
+	    Node* nodeToChange = firstNode;
+	    
+
+	    if(index == 0) {
 	        newNode->next = nodeToChange;
 	        firstNode = newNode;
 	        return;	
 	    }
 
-	    if(nodeToChange->next == NULL && !isFirstNodeInitialized) {
-	        nodeToChange->data = data;
-		isFirstNodeInitialized = true;
-		return;
-	    }
 	    for(int i = 0; i < index - 1; ++i) {
-		if(nodeToChange->next == NULL) {
-		    nodeToChange->next = newNode;
-		    return;
-		}    
-		nodeToChange = nodeToChange->next;
+			if(nodeToChange->next == NULL) {
+		    	nodeToChange->next = newNode;
+		    	return;
+			}    
+			nodeToChange = nodeToChange->next;
 	    }
 
 	    newNode->next = nodeToChange->next;
@@ -81,7 +86,7 @@ class LinkedList {
 	        return;
 	    }	
 	    for(int i = 1; i <= n; ++i) {
-		add(i);
+			add(i);
 	    }
 	}
 
@@ -89,7 +94,7 @@ class LinkedList {
 	    Node* nodeToPrint = firstNode;
 	    while(nodeToPrint != NULL) {
 	        std::cout<<nodeToPrint<<":"<<nodeToPrint->data<<" -> ";
-		nodeToPrint = nodeToPrint->next;
+			nodeToPrint = nodeToPrint->next;
 	    }
 
 	    std::cout<<"NULL"<<std::endl;
@@ -100,10 +105,10 @@ class LinkedList {
 	    Node* savePreviousPointer = firstNode;
 	    firstNode->next = NULL;
 	    while(saveNextPointer != NULL) {
-		Node* saveNode = saveNextPointer->next;    
-		saveNextPointer->next = savePreviousPointer;
-		savePreviousPointer = saveNextPointer;
-		saveNextPointer = saveNode;
+			Node* saveNode = saveNextPointer->next;    
+			saveNextPointer->next = savePreviousPointer;
+			savePreviousPointer = saveNextPointer;
+			saveNextPointer = saveNode;
 	    }
 
 	    firstNode = savePreviousPointer;
